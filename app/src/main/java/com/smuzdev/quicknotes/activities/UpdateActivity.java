@@ -35,6 +35,7 @@ public class UpdateActivity extends AppCompatActivity {
     byte[] byteImage, newByteImage;
     ImageView image;
     Uri uri;
+    Boolean isNewByteImage = false;
 
 
     @Override
@@ -69,7 +70,13 @@ public class UpdateActivity extends AppCompatActivity {
                 title = title_input.getText().toString().trim();
                 note_text = note_text_input.getText().toString().trim();
                 note_date = note_date_tv.getText().toString().trim();
-                byteImage = newByteImage;
+                if (isNewByteImage) {
+                    byteImage = newByteImage;
+                } else {
+                    BitmapDrawable drawable = (BitmapDrawable) image.getDrawable();
+                    Bitmap bitmap = drawable.getBitmap();
+                    byteImage = DbBitmapUtility.getBytes(bitmap);
+                }
                 databaseHelper.updateData(id, title, note_text, note_date, byteImage);
             }
         });
@@ -102,7 +109,7 @@ public class UpdateActivity extends AppCompatActivity {
             BitmapDrawable drawable = (BitmapDrawable) image.getDrawable();
             Bitmap bitmap = drawable.getBitmap();
             newByteImage = DbBitmapUtility.getBytes(bitmap);
-
+            isNewByteImage = true;
         } else Toast.makeText(this, "You haven't picked image", Toast.LENGTH_LONG).show();
     }
 
@@ -117,9 +124,9 @@ public class UpdateActivity extends AppCompatActivity {
             note_date = getIntent().getStringExtra("noteDate");
 
             databaseHelper = new DatabaseHelper(UpdateActivity.this);
-            ArrayList<byte[]> thing_image = databaseHelper.selectImageById(id);
+            ArrayList<byte[]> note_image = databaseHelper.selectImageById(id);
 
-            byte[] byteImage = thing_image.get(0);
+            byte[] byteImage = note_image.get(0);
             Bitmap bitmapImage = DbBitmapUtility.getImage(byteImage);
 
             //Setting Intent Data
