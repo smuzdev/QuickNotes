@@ -1,3 +1,20 @@
 <resources>
-    <string name="app_name">QuickNotes</string>
+    <string name="app_name">Quick Notes</string>
+    <string name="main_page_title">Notes</string>
+    <string name="add_page_title">Add new note</string>
+    <string name="update_page_title">Update note</string>
+    <string name="id">Note ID</string>
+    <string name="title">Note Title</string>
+    <string name="note_text">Note Text</string>
+    <string name="note_date">Note Date</string>
+    <string name="info">Enter your note here:</string>
+    <string name="no_data">No notes</string>
+    <string name="no_image">No image</string>
+    <string name="note_image">Note image</string>
+
+    <string name="add_button">Add</string>
+    <string name="select_image_button">Select image</string>
+    <string name="delete_button">Delete</string>
+    <string name="update_button">Update</string>
+    <string name="delete_all">Delete All</string>
 </resources>
