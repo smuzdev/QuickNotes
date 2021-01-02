@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -185,7 +186,8 @@ public class MainActivity extends AppCompatActivity {
                                     note.getTitle(),
                                     note.getNoteText(),
                                     note.getNoteDate(),
-                                    note.getByteImage());
+                                    Base64.decode(note.getByteImage(), Base64.DEFAULT)
+                            );
 
                             DbAsyncInsertTask asyncInsertTask = new DbAsyncInsertTask(MainActivity.this);
                             asyncInsertTask.execute(noteModel);

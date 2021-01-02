@@ -9,13 +9,16 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
+        android:background="@color/white_bg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="12dp">
+            android:background="@drawable/recycler_item_background"
+            android:padding="12dp"
+            android:layout_margin="8dp">
 
             <ImageView
                 android:id="@+id/ivNoteImage"

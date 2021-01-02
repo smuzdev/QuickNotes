@@ -14,10 +14,8 @@ public class Note {
         this.byteImage = byteImage;
     }
 
-    public Note(String title, String noteText, String noteDate) {
-        this.title = title;
-        this.noteText = noteText;
-        this.noteDate = noteDate;
+    public Note() {
+
     }
 
     public String getTitle() {
