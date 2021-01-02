@@ -12,13 +12,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.Html;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
     TextView no_data;
 
     DatabaseHelper databaseHelper;
-    ArrayList<ArrayList<String>> things;
     ArrayList<String> note_id, note_title, note_text, note_date;
     ArrayList<byte[]> note_image;
     CustomAdapter customAdapter;
@@ -67,6 +69,25 @@ public class MainActivity extends AppCompatActivity {
         no_data = findViewById(R.id.no_data);
         add_button = findViewById(R.id.add_button);
 
+        databaseHelper = new DatabaseHelper(MainActivity.this);
+        note_id = new ArrayList<>();
+        note_title = new ArrayList<>();
+        note_text = new ArrayList<>();
+        note_date = new ArrayList<>();
+        note_image = new ArrayList<>();
+
+        storeDataInArrays();
+
+        customAdapter = new CustomAdapter(MainActivity.this, this, note_id, note_title,
+                note_text, note_date, note_image);
+        recyclerView.setAdapter(customAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
         add_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,20 +96,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        databaseHelper = new DatabaseHelper(MainActivity.this);
-        note_id = new ArrayList<>();
-        note_title = new ArrayList<>();
-        note_text = new ArrayList<>();
-        note_date = new ArrayList<>();
-        note_image = new ArrayList<>();
-        things = new ArrayList<>();
-
-        storeDataInArrays();
-
-        customAdapter = new CustomAdapter(MainActivity.this, this, note_id, note_title,
-                note_text, note_date, note_image);
-        recyclerView.setAdapter(customAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
     }
 
     @Override

@@ -80,7 +80,7 @@
         android:ems="10"
         android:inputType="textMultiLine"
         android:lines="6"
-        android:minLines="3"
+        android:minLines="2"
         android:maxLines="8"
         android:hint="@string/note_text"
         app:layout_constraintEnd_toEndOf="parent"

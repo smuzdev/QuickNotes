@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.smuzdev.quicknotes.R;
 import com.smuzdev.quicknotes.activities.UpdateActivity;
+import com.smuzdev.quicknotes.model.Note;
 
 import java.util.ArrayList;
 
