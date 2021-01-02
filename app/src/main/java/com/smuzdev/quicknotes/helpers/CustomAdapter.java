@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.smuzdev.quicknotes.R;
@@ -84,7 +85,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
 
         TextView note_id_txt, note_title_txt, note_text_txt, note_date_txt;
         ImageView note_image;
-        LinearLayout mainLayout;
+        CardView mainLayout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -93,7 +94,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
             note_text_txt = itemView.findViewById(R.id.note_text_txt);
             note_date_txt = itemView.findViewById(R.id.note_date_txt);
             note_image = itemView.findViewById(R.id.ivNoteImage);
-            mainLayout = itemView.findViewById(R.id.mainLayout);
+            mainLayout = itemView.findViewById(R.id.cardView);
             translate_anim = AnimationUtils.loadAnimation(context, R.anim.translate_anim);
             mainLayout.setAnimation(translate_anim);
         }
