@@ -11,6 +11,8 @@
     <string name="no_data">No notes</string>
     <string name="no_image">No image</string>
     <string name="note_image">Note image</string>
+    <string name="serialize">Serialize</string>
+    <string name="deserialize">Deserialize</string>
 
     <string name="add_button">Add</string>
     <string name="select_image_button">Select image</string>

@@ -13,17 +13,23 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.smuzdev.quicknotes.R;
 import com.smuzdev.quicknotes.helpers.CustomAdapter;
 import com.smuzdev.quicknotes.helpers.DatabaseHelper;
+import com.smuzdev.quicknotes.helpers.DbAsyncInsertTask;
+import com.smuzdev.quicknotes.helpers.JSON.IOJson;
+import com.smuzdev.quicknotes.model.IOJsonModel;
+import com.smuzdev.quicknotes.model.Note;
 
 import java.util.ArrayList;
 
@@ -40,10 +46,15 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<byte[]> note_image;
     CustomAdapter customAdapter;
 
+    IOJson ioJson;
+    IOJsonModel ioJsonModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ioJson = new IOJson(this);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -117,6 +128,21 @@ public class MainActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.delete_all) {
             confirmDialog();
         }
+
+        if (item.getItemId() == R.id.serialize) {
+            ioJson.Serialize();
+        }
+
+        if (item.getItemId() == R.id.deserialize) {
+            ioJsonModel = ioJson.Deserialize();
+
+            if (ioJsonModel.noteArrayList.size() > 0) {
+                showWarningRestoreAlertDialog();
+            } else {
+                Toast.makeText(this, " size < 0", Toast.LENGTH_SHORT).show();
+            }
+
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -141,5 +167,41 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         builder.create().show();
+    }
+
+    private void showWarningRestoreAlertDialog() {
+        new android.app.AlertDialog.Builder(this)
+                .setTitle("Вы уверены?")
+                .setMessage("Все существующие данные будут удалены и будет выполнено восстановление из резервной копией.")
+                .setPositiveButton("Восстановить", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        databaseHelper.deleteAllData();
+
+                        for (Note note : ioJsonModel.noteArrayList) {
+
+                            Note noteModel = new Note(
+                                    note.getTitle(),
+                                    note.getNoteText(),
+                                    note.getNoteDate(),
+                                    note.getByteImage());
+
+                            DbAsyncInsertTask asyncInsertTask = new DbAsyncInsertTask(MainActivity.this);
+                            asyncInsertTask.execute(noteModel);
+                            startActivity(new Intent(MainActivity.this, MainActivity.class));
+                        }
+
+                        Toast.makeText(MainActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                        //showSuccessDeSerializationMessage();
+                    }
+                })
+                .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .show();
     }
 }

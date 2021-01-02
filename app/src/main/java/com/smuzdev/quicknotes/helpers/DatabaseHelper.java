@@ -6,14 +6,17 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
+import android.util.Base64;
 
 import androidx.annotation.Nullable;
+
+import com.smuzdev.quicknotes.model.Note;
 
 import java.util.ArrayList;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    public static final String DATABASE_NAME = "GoodsFinder.db";
+    public static final String DATABASE_NAME = "QuickNotes.db";
     public static final int DATABASE_VERSION = 1;
     public static final String TABLE_NAME = "Notes";
     public static final String COLUMN_ID = "_id";
@@ -108,16 +111,42 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public ArrayList<byte[]> selectImageById(String id) {
         String query = "SELECT " + COLUMN_IMAGE + " FROM " + TABLE_NAME + " WHERE " + COLUMN_ID + "=" + id;
         SQLiteDatabase db = this.getReadableDatabase();
-        ArrayList<byte[]> thing_image = new ArrayList<>();
+        ArrayList<byte[]> note_image = new ArrayList<>();
 
         Cursor cursor;
         if (db != null) {
             cursor = db.rawQuery(query, null);
             while (cursor.moveToNext()) {
-                thing_image.add(cursor.getBlob(0));
+                note_image.add(cursor.getBlob(0));
             }
             cursor.close();
         }
-        return thing_image;
+        return note_image;
     }
+
+    public ArrayList<Note> getAllNotesForSerialize() {
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            ArrayList<Note> noteArrayList = new ArrayList<>();
+            String query = "SELECT * FROM NOTES";
+            Cursor cursor = db.rawQuery(query, null);
+            cursor.moveToFirst();
+            if (cursor.getCount() > 0) {
+                while (!cursor.isAfterLast()) {
+                    noteArrayList.add(new Note(
+                            cursor.getString(1), // title
+                            cursor.getString(2), // noteText
+                            cursor.getString(3), // noteDate
+                            Base64.encode(cursor.getBlob(4), Base64.DEFAULT))); // image
+                    cursor.moveToNext();
+                }
+            }
+            cursor.close();
+            return noteArrayList;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }
