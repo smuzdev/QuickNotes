@@ -139,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (item.getItemId() == R.id.serialize) {
             ioJson.Serialize();
+
         }
 
         if (item.getItemId() == R.id.deserialize) {
@@ -179,9 +180,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void showWarningRestoreAlertDialog() {
         new android.app.AlertDialog.Builder(this)
-                .setTitle("Вы уверены?")
-                .setMessage("Все существующие данные будут удалены и будет выполнено восстановление из резервной копией.")
-                .setPositiveButton("Восстановить", new DialogInterface.OnClickListener() {
+                .setTitle("Are you sure?")
+                .setMessage("All relevant data will be deleted and the backup will be restored.")
+                .setPositiveButton("Restore", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
@@ -200,12 +201,10 @@ public class MainActivity extends AppCompatActivity {
                             asyncInsertTask.execute(noteModel);
                             startActivity(new Intent(MainActivity.this, MainActivity.class));
                         }
-
-                        Toast.makeText(MainActivity.this, "Success", Toast.LENGTH_SHORT).show();
-                        //showSuccessDeSerializationMessage();
+                        Toast.makeText(MainActivity.this, "Data deserialized successfully.", Toast.LENGTH_SHORT).show();
                     }
                 })
-                .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 

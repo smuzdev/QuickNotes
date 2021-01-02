@@ -40,7 +40,7 @@ public class IOJson {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Data serialized successfully.", Toast.LENGTH_SHORT).show();
         }
 
     }
